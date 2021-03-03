@@ -1,0 +1,30 @@
+server:
+  port: 11001
+spring:
+  application:
+    name: sfnotice
+  cloud:
+    service-registry:
+      auto-registration:
+        enabled: true
+#注册中心
+eureka:
+  client:
+    #设置服务注册中心的URL
+    service-url:
+      defaultZone: http://eureka01:10010/eureka/,http://eureka02:10010/eureka/
+
+#增加健康检查监控
+management:
+  endpoints:
+    jmx:
+      exposure:
+        exclude: '*'
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+      shutdown:
+        enabled: true

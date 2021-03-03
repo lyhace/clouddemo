@@ -1,0 +1,33 @@
+server:
+  port: 10012
+spring:
+  application:
+    name: eureka-center
+eureka:
+  #主机名，必填
+  instance:
+    hostname: eureka02
+  client:
+    #是否将自己注册到其他Eureka Server,默认为true 需要
+    register-with-eureka: true
+    #是否从eureka server获取注册信息， 需要
+    fetch-registry: true
+    #设置服务注册中心的URL，用于client和server端交流
+    #此节点应向其他节点发起请求
+    serviceUrl:
+      defaultZone: http://eureka01:10011/eureka/
+
+#增加健康检查监控
+management:
+  endpoints:
+    jmx:
+      exposure:
+        exclude: '*'
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+      shutdown:
+        enabled: true
