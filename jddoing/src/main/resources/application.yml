@@ -1,8 +1,8 @@
 server:
-  port: 11001
+  port: 12002
 spring:
   application:
-    name: sfnotice
+    name: jddoing
   cloud:
     service-registry:
       auto-registration:
@@ -36,5 +36,5 @@ management:
         enabled: true
 info:
   name: ${spring.application.name}
-  description: SF通知服务接收端
+  description: JD业务处理服务端
   version: V1.0.0

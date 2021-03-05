@@ -3,10 +3,19 @@ server:
 spring:
   application:
     name: eureka-center
+  security:
+    user:
+      name: lyhace
+      password: 123456
 eureka:
   #主机名，必填
   instance:
     hostname: eureka01
+  #配置关闭自我保护，并按需配置Eureka Server清理无效节点的时间间隔
+  #目的是因为k8s弹性扩缩容下，容易低于85%的自我保护阈值，所以服务端需要关闭自我保护并且客户端也需要开启监控检查和按实际需要配置续约时间
+  server:
+    enable-self-preservation: false #关闭自我保护
+    eviction-interval-timer-in-ms: 5000 #清理间隔（单位毫秒，默认是60*1000）
   client:
     #是否将自己注册到其他Eureka Server,默认为true 需要
     register-with-eureka: true
@@ -15,7 +24,8 @@ eureka:
     #设置服务注册中心的URL，用于client和server端交流
     #此节点应向其他节点发起请求
     serviceUrl:
-      defaultZone: http://eureka02:10012/eureka/
+      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://lyhace:123456@eureka02:10012/eureka/
 
 #增加健康检查监控
 management:
@@ -25,9 +35,13 @@ management:
         exclude: '*'
     web:
       exposure:
-        include: health
+        include: health,info
   endpoint:
     health:
       show-details: always
       shutdown:
         enabled: true
+info:
+  name: ${spring.application.name}
+  description: 服务注册中心01
+  version: V1.0.0

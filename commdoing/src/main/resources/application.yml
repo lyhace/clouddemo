@@ -1,8 +1,8 @@
 server:
-  port: 11001
+  port: 12003
 spring:
   application:
-    name: sfnotice
+    name: commdoing
   cloud:
     service-registry:
       auto-registration:
@@ -36,5 +36,5 @@ management:
         enabled: true
 info:
   name: ${spring.application.name}
-  description: SF通知服务接收端
+  description: 通用业务处理服务端
   version: V1.0.0
