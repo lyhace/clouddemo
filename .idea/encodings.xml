@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/commdoing/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka01/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eureka02/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jddoing/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/jdnotice/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sfdoing/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sfnotice/src/main/java" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
