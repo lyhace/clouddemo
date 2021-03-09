@@ -9,6 +9,8 @@ spring:
       password: 123456
 
 eureka:
+  username: lyhace
+  password: 123456
   #主机名，必填
   instance:
     hostname: eureka02
@@ -25,7 +27,7 @@ eureka:
     #设置服务注册中心的URL，用于client和server端交流
     #此节点应向其他节点发起请求
     serviceUrl:
-      defaultZone: http://lyhace:123456@eureka01:10011/eureka/
+      defaultZone: http://${eureka.username}:${eureka.password}@eureka01:10011/eureka/
 
 #增加健康检查监控
 management:
@@ -35,7 +37,7 @@ management:
         exclude: '*'
     web:
       exposure:
-        include: health,info
+        include: ["health","info","shutdown"]
   endpoint:
     health:
       show-details: always

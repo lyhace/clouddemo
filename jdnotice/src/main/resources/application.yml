@@ -9,17 +9,38 @@ spring:
         enabled: true
 #注册中心
 eureka:
+  username: lyhace
+  password: 123456
   client:
     #设置服务注册中心的URL
     service-url:
-      defaultZone: http://lyhace:123456@eureka01:10011/eureka/,http://lyhace:123456@eureka02:10012/eureka/
+      defaultZone: http://${eureka.username}:${eureka.password}@eureka01:10011/eureka/,http://${eureka.username}:${eureka.password}@eureka02:10012/eureka/
     #配置开启健康检查，并按需配置续约更新时间和到期时间
     healthcheck:
       enabled: true
+    #作为Eureka Client客户端，是否从Eureka Server获取注册信息，这里设置为true，表示需要从Eureka Server定期获取注册了的Provider实例清单。
+    fetch-registry: true
+    #作为Eureka Client客户端，从Eureka服务器端获取注册信息的间隔时间，单位为秒，默认为30秒。
+    registry-fetch-interval-seconds: 5
+    #更新实例信息的变化到Eureka服务端的间隔时间，单位为秒，默认为30秒。
+    instance-info-replication-interval-seconds: 10
   instance:
+    #该服务实例在注册中心的唯一实例ID
+    instance-id: ${spring.application.name}-${spring.cloud.client.ipaddress}-${server.port}
     lease-renewal-interval-in-seconds: 10 #续约更新时间间隔（默认30秒）
     lease-expiration-duration-in-seconds: 30 #续约到期时间（默认90秒）
-
+feign:
+  okhttp:
+    enabled: true
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
 #增加健康检查监控
 management:
   endpoints:
@@ -28,7 +49,7 @@ management:
         exclude: '*'
     web:
       exposure:
-        include: health,info
+        include: ["health","info","shutdown"]
   endpoint:
     health:
       show-details: always

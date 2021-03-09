@@ -9,10 +9,12 @@ spring:
         enabled: true
 #注册中心
 eureka:
+  username: lyhace
+  password: 123456
   client:
     #设置服务注册中心的URL
     service-url:
-      defaultZone: http://lyhace:123456@eureka01:10011/eureka/,http://lyhace:123456@eureka02:10012/eureka/
+      defaultZone: http://${eureka.username}:${eureka.password}@eureka01:10011/eureka/,http://${eureka.username}:${eureka.password}@eureka02:10012/eureka/
     #配置开启健康检查，并按需配置续约更新时间和到期时间
     healthcheck:
       enabled: true
@@ -28,7 +30,7 @@ management:
         exclude: '*'
     web:
       exposure:
-        include: health,info
+        include: ["health","info","shutdown"]
   endpoint:
     health:
       show-details: always
