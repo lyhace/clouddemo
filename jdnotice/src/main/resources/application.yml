@@ -30,17 +30,30 @@ eureka:
     lease-renewal-interval-in-seconds: 10 #续约更新时间间隔（默认30秒）
     lease-expiration-duration-in-seconds: 30 #续约到期时间（默认90秒）
 feign:
-  okhttp:
-    enabled: true
   hystrix:
     enabled: true
+  okhttp:
+    enabled: true
+
 hystrix:
   command:
     default:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 1000
+            timeoutInMilliseconds: 3000 #熔断器的超时时长默认1秒，最常修改的参数
+          timeout:
+            enabled: false # 为false则超时控制有ribbon控制，为true则hystrix超时和ribbon超时都是用，但是谁小谁生效，默认为true
+
+ribbon:
+  MaxAutoRetries: 1 #同一台实例的最大重试次数，但是不包括首次调用，默认为1次
+  MaxAutoRetriesNextServer: 1 #重试负载均衡其他实例的最大重试次数，不包括首次调用，默认为0次
+  OkToRetryOnAllOperations: false  #对所有操作请求都进行重试，如果是get则可以，如果是post，put等操作没有实现幂等的情况下是很危险的,所以设置为false
+  ConnectTimeout: 500  #连接建立的超时时长，默认1秒
+  ReadTimeout: 500 #处理请求的超时时间，默认为1秒
+  #Ribbon默认GET请求不论是连接失败还是处理失败都会重试，而对于非GET请求只对连接失败进行重试
+  #配置Hystrix的timeoutInMillisecond要大于Ribbon的 ( ConnectTimeout + ReadTimeout ) × 2。目的就是保证在熔断之前完成远程调用(包括Ribbon的重试时间)。
+
 #增加健康检查监控
 management:
   endpoints:
