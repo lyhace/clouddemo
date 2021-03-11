@@ -5,19 +5,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 @RestController
 @RequestMapping("/JD")
 @Slf4j
 public class JdDoingController {
 
-    @GetMapping("/doing")
+    AtomicInteger index = new AtomicInteger();
+
+    @RequestMapping("/doing")
     public String doing(){
         try {
-            Thread.sleep(5000);
+            Thread.sleep(400);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        String Mes = "JD doing ...";
+
+        String Mes = "JD doing ..." + index.incrementAndGet();
         log.info(Mes);
         return Mes;
     }
