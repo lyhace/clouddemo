@@ -18,9 +18,53 @@ eureka:
     #配置开启健康检查，并按需配置续约更新时间和到期时间
     healthcheck:
       enabled: true
+    #作为Eureka Client客户端，是否从Eureka Server获取注册信息，这里设置为true，表示需要从Eureka Server定期获取注册了的Provider实例清单。
+    fetch-registry: true
+    #作为Eureka Client客户端，从Eureka服务器端获取注册信息的间隔时间，单位为秒，默认为30秒。
+    registry-fetch-interval-seconds: 5
+    #更新实例信息的变化到Eureka服务端的间隔时间，单位为秒，默认为30秒。
+    instance-info-replication-interval-seconds: 10
   instance:
+    prefer-ip-address: true
+    #该服务实例在注册中心的唯一实例ID
+    instance-id: ${spring.application.name}-${spring.cloud.client.ipaddress}-${server.port}
     lease-renewal-interval-in-seconds: 10 #续约更新时间间隔（默认30秒）
     lease-expiration-duration-in-seconds: 30 #续约到期时间（默认90秒）
+feign:
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: '*'
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE # 隔离策略，默认是THREAD, 可选 THREAD｜SEMAPHORE
+          semaphore:
+            maxConcurrentRequests: 1 #是一个绝对值，无时间窗口，相当于亚毫秒级的，指任意时间点允许的并发数。当请求达到或超过该设置值后，其其余就会被拒绝。默认值是100。
+          thread:
+            timeoutInMilliseconds: 3000 #熔断器的超时时长默认1秒，最常修改的参数
+          timeout:
+            enabled: false # 为false则超时控制有ribbon控制，为true则hystrix超时和ribbon超时都是用，但是谁小谁生效，默认为true
+  threadpool: #用于控制HystrixCommand执行所在线程池的行为
+    default:
+      coreSize: 2 #线程池的核心线程数
+      maximumSize: 4 #线程池的最大线程数，超过该线程数的请求会被拒绝
+      maxQueueSize: -1 #用于设置线程池的最大队列大小，-1采用SynchronousQueue，其他正数采用LinkedBlockingQueue
+      queueSizeRejectionThreshold: 10 #用于设置线程池队列的拒绝阀值，由于LinkedBlockingQueue不能动态改版大小，使用时需要用该参数来控制线程数
+
+ribbon:
+  MaxAutoRetries: 0 #同一台实例的最大重试次数，但是不包括首次调用，默认为1次
+  MaxAutoRetriesNextServer: 1 #重试负载均衡其他实例的最大重试次数，不包括首次调用，默认为0次(如果只有一个实例会重复请求当前实例一次，即使配置大于1，当前实例也只会被重复请求一次)
+  OkToRetryOnAllOperations: true  #对所有操作请求都进行重试，如果是get则可以，如果是post，put等操作没有实现幂等的情况下是很危险的,所以设置为false
+  ConnectTimeout: 500  #连接建立的超时时长，默认1秒
+  ReadTimeout: 500 #处理请求的超时时间，默认为1秒
+  #Ribbon默认GET请求不论是连接失败还是处理失败都会重试，而对于非GET请求只对连接失败进行重试
+  #配置Hystrix的timeoutInMillisecond要大于Ribbon的 ( ConnectTimeout + ReadTimeout ) × 2。目的就是保证在熔断之前完成远程调用(包括Ribbon的重试时间)。
 
 #增加健康检查监控
 management:
@@ -30,7 +74,7 @@ management:
         exclude: '*'
     web:
       exposure:
-        include: ["health","info","shutdown"]
+        include: ["health","info","shutdown","hystrix.stream"]
   endpoint:
     health:
       show-details: always

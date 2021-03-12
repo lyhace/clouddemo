@@ -13,6 +13,11 @@ eureka:
   #主机名，必填
   instance:
     hostname: eureka01
+    prefer-ip-address: true
+    #该服务实例在注册中心的唯一实例ID
+    instance-id: ${spring.application.name}-${spring.cloud.client.ipaddress}-${server.port}
+    lease-renewal-interval-in-seconds: 10 #续约更新时间间隔（默认30秒）
+    lease-expiration-duration-in-seconds: 30 #续约到期时间（默认90秒）
   #配置关闭自我保护，并按需配置Eureka Server清理无效节点的时间间隔
   #目的是因为k8s弹性扩缩容下，容易低于85%的自我保护阈值，所以服务端需要关闭自我保护并且客户端也需要开启监控检查和按实际需要配置续约时间
   server:

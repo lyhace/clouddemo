@@ -1,10 +1,8 @@
-package com.lyhace.jdnotice.controller;
+package com.lyhace.sfnotice.controller;
 
-import com.lyhace.jdnotice.service.DoingCommOpenfeignService;
-import com.lyhace.jdnotice.service.DoingOpenfeignService;
+import com.lyhace.sfnotice.service.DoingCommOpenfeignService;
+import com.lyhace.sfnotice.service.DoingOpenfeignService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/JD")
+@RequestMapping("/SF")
 @Slf4j
-public class JdNoticeController {
+public class SfNoticeController {
 
 //    @Qualifier("doingHystrixService")
 //    @Autowired
@@ -25,14 +23,12 @@ public class JdNoticeController {
 
     @GetMapping("/notice")
     public String notice(){
-
         String mes = "";
         if(true){
             mes =  doingOpenfeignService.doing();
         }else{
             mes =  doingCommOpenfeignService.doing();
         }
-
         log.info("服务调用完成：{}", mes);
         return mes;
     }
