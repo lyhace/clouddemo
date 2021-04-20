@@ -7,18 +7,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="chainsearch" />
         <module name="gateway" />
         <module name="jdnotice" />
         <module name="commdoing" />
         <module name="jddoing" />
         <module name="eureka" />
+        <module name="chainsavees" />
         <module name="eureka02" />
         <module name="eureka01" />
         <module name="sfnotice" />
         <module name="sfdoing" />
+        <module name="jdsearch" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="chainsavees" target="1.8" />
+      <module name="chainsearch" target="1.8" />
       <module name="commdoing" target="1.8" />
       <module name="eureka" target="1.8" />
       <module name="eureka01" target="1.8" />
@@ -26,6 +31,7 @@
       <module name="gateway" target="1.8" />
       <module name="jddoing" target="1.8" />
       <module name="jdnotice" target="1.8" />
+      <module name="jdsearch" target="1.8" />
       <module name="sfdoing" target="1.8" />
       <module name="sfnotice" target="1.8" />
       <module name="temp" target="1.8" />
@@ -33,6 +39,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="chainsavees" options="-parameters" />
+      <module name="chainsearch" options="-parameters" />
       <module name="commdoing" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="eureka01" options="-parameters" />
@@ -40,6 +48,7 @@
       <module name="gateway" options="-parameters" />
       <module name="jddoing" options="-parameters" />
       <module name="jdnotice" options="-parameters" />
+      <module name="jdsearch" options="-parameters" />
       <module name="sfdoing" options="-parameters" />
       <module name="sfnotice" options="-parameters" />
       <module name="temp" options="-parameters" />

@@ -1,0 +1,31 @@
+server:
+  port: 14001
+spring:
+  application:
+    name: chainsavees
+
+
+rocketmq:
+  name-server: 172.16.250.24:9876
+  producer:
+    group: "sms"
+    topic: "sms%sms_corp_call_info"
+
+#增加健康检查监控
+management:
+  endpoints:
+    jmx:
+      exposure:
+        exclude: '*'
+    web:
+      exposure:
+        include: ["health","info","shutdown"]
+  endpoint:
+    health:
+      show-details: always
+      shutdown:
+        enabled: true
+info:
+  name: ${spring.application.name}
+  description: 区块链信息录入elasticsearch
+  version: V1.0.0
